@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Login Page Template - W3jar.Com</title>
+    <link href="https://fonts.googleapis.com/css2?family=Muli:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="popup.css">
+    <style>
+        .source {
+            text-align: center;
+            color: #ffffff;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body >
+
+    <script src="popup.js"></script>
+
+    <div class="main-container">
+        <div class="form-container">
+
+            <div class="source"><a title="Axis Bank Portal"
+                    href="https://vms.axisb.com:8443">Axis bank</a></div>
+
+            <div class="form-body">
+
+
+                <form action="" class="the-form" id="loginForm">
+
+                    <label for="userId">User ID</label>
+                    <input type="userId" name="userId" id="userId" placeholder="Enter your userId">
+
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" placeholder="Enter your password">
+
+                    <div class="auto-login">
+                        <div>Auto-login: </div>
+                        <label class="switch">
+                            <input type="checkbox" value="true" id="toggleButton" name="auto-login">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+
+                    <div class="check-boxes">
+                        <input type="checkbox" id="site1" name="site1" value="VMS">
+                        <label for="site1">VMS</label><br>
+                        <input type="checkbox" id="site2" name="site2" value="Jira">
+                        <label for="site2"> Jira</label><br>
+                        <input type="checkbox" id="site3" name="site3" value="BitBucket">
+                        <label for="site3"> BitBucket</label><br>
+                        <input type="checkbox" id="site4" name="site4" value="Jenkins">
+                        <label for="site4"> Jenkins</label><br>
+                    </div>
+
+                    <input type="submit" value="Submit">
+
+                </form>
+
+            </div><!-- FORM BODY-->
+
+        </div><!-- FORM CONTAINER -->
+    </div>
+
+</body>
+
+</html>
