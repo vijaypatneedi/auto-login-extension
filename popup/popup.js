@@ -62,21 +62,28 @@ const handleReset = async () => {
 
 const handleSubmitButtonState = async () => {
 
+  let loginData = await getStorageData('loginData');
+
   let input1 = document.getElementById("userId")
   let input2 = document.getElementById('password')
-  console.log('inputs', input1.value, input2.value)
-  let button = document.getElementById("submitButton")
-  button.disabled = true
-  document.getElementById("submitButton").className = "submitDisable"
+
   const stateHandle = () => {
-    if ((document.getElementById('userId').value === "" || document.getElementById('password').value === "")) {
+    let button = document.getElementById("submitButton")
+    if ((input1.value === "" || input2.value === "")) {
       button.disabled = true
-      document.getElementById("submitButton").className = "submitDisable"
+      button.className = "submitDisable"
+      button.value = "Submit"
+    } else if (Object.keys(loginData).length === 0) {
+      button.disabled = false
+      button.className = "submitEnable"
+      button.value = "Submit"
     } else {
       button.disabled = false
-      document.getElementById("submitButton").className = "submitEnable"
+      button.className = "submitEnable"
+      button.value = "Reset"
     }
   }
+  stateHandle()
   input1.addEventListener("change", stateHandle)
   input2.addEventListener("change", stateHandle)
 }
@@ -130,7 +137,7 @@ const populateData = async () => {
         document.getElementById(site).checked = loginData.loginData.autoLogin ? true : false;
       });
     }
-    document.getElementById("submitButton").value = "Reset"
+
   }
   else {
     document.getElementById("userId").value = '';
@@ -139,9 +146,10 @@ const populateData = async () => {
     for (let i = 1; i < 5; i++) {
       document.getElementById(`site${i}`).checked = false;
     }
-    document.getElementById("submitButton").value = "Submit"
+
 
   }
+  await handleSubmitButtonState()
 }
 
 window.onload = populateData
