@@ -13,21 +13,23 @@ const getStorageData = key =>
 
 async function tryLogin() {
 
-  let pageData = {};
+  let loginData = {};
 
   let eve = new Event('input', { bubbles: true, cancelable: false });
 
   const userId = document.getElementById('email');
   const password = document.getElementById('password');
 
-  pageData = await getStorageData('loginData')
+  loginData = await getStorageData('loginData')
 
-  userId.value = pageData.loginData.userId.toString();
-  password.value = pageData.loginData.password.toString();
+  if (Object.keys(loginData).length !== 0) {
+    userId.value = loginData.loginData.userId.toString();
+    password.value = loginData.loginData.password.toString();
 
-  await userId.dispatchEvent(eve);
-  await password.dispatchEvent(eve);
-  await document.querySelector('button[type="submit"]').click()
+    await userId.dispatchEvent(eve);
+    await password.dispatchEvent(eve);
+    await document.querySelector('button[type="submit"]').click()
+  }
 }
 
 tryLogin()
