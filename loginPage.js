@@ -21,7 +21,7 @@ async function tryLogin() {
   const password = document.getElementById('password');
 
   pageData = await getStorageData('loginData')
-  console.log('data is', pageData, pageData.loginData, pageData.loginData.userId)
+
   userId.value = pageData.loginData.userId.toString();
   password.value = pageData.loginData.password.toString();
 
@@ -29,3 +29,5 @@ async function tryLogin() {
   await password.dispatchEvent(eve);
   await document.querySelector('button[type="submit"]').click()
 }
+
+tryLogin()

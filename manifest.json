@@ -30,7 +30,17 @@
                 "loginPage.js"
             ],
             "matches": [
-                "https://vms.axisb.com:8443/login"
+                "https://vms.axisb.com:8443/login",
+                "https://jira.axisb.com/login.jsp",
+                "https://bitbucket.axisb.com/login"
+            ]
+        },
+        {
+            "js": [
+                "homePage.js"
+            ],
+            "matches": [
+                "https://vms.axisb.com:8443/"
             ]
         }
     ]
