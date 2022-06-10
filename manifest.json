@@ -27,20 +27,19 @@
     "content_scripts": [
         {
             "js": [
-                "loginPage.js"
+                "vms.js"
             ],
             "matches": [
-                "https://vms.axisb.com:8443/login",
-                "https://jira.axisb.com/login.jsp",
-                "https://bitbucket.axisb.com/login"
+                "https://vms.axisb.com:8443/*"
             ]
         },
         {
             "js": [
-                "homePage.js"
+                "other-sites.js"
             ],
             "matches": [
-                "https://vms.axisb.com:8443/"
+                "https://jira.axisb.com/login.jsp",
+                "https://bitbucket.axisb.com/login"
             ]
         }
     ]

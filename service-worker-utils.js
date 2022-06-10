@@ -8,19 +8,6 @@ console.log("External file is also loaded!")
 const timeout = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
 };
-
-const getlocalStorageValue = (data) => {
-    return new Promise((resolve, reject) => {
-        chrome.storage.local.get(data, function (response) {
-            console.log(response);
-            if (chrome.runtime.lastError) {
-                reject(new Error(chrome.runtime.lastError));
-            } else {
-                resolve(response);
-            }
-        });
-    });
-};
 const createOrSelectTab = (url2) => {
     let url = "https://vms.axisb.com:8443/"
     return new Promise((resolve, reject) => {
@@ -65,5 +52,18 @@ const updateTab = (tabId, tabUrl) => {
         } catch (e) {
             reject(`Error : ${e.message}`);
         }
+    });
+};
+// Helper function to pause control/flow untill specified selector is available
+const waitForElement = (selector) => {
+    return new Promise((resolve) => {
+        const observer = new MutationObserver((mutations) => {
+            if (document.querySelector(selector)) {
+                console.log('element found')
+                resolve(document.querySelector(selector));
+                observer.disconnect();
+            }
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
     });
 };

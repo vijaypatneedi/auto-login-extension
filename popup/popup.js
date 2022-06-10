@@ -1,4 +1,4 @@
-const setStorageData = data =>
+const setChromeStorage = data =>
   new Promise((resolve, reject) =>
     chrome.storage.sync.set(data, () =>
       chrome.runtime.lastError
@@ -7,7 +7,7 @@ const setStorageData = data =>
     )
   )
 
-const getStorageData = key =>
+const getChromeStorage = key =>
   new Promise((resolve, reject) =>
     chrome.storage.sync.get(key, result =>
       chrome.runtime.lastError
@@ -16,7 +16,7 @@ const getStorageData = key =>
     )
   )
 
-const removeStorageData = key =>
+const removeChromeStorage = key =>
   new Promise((resolve, reject) =>
     chrome.storage.sync.remove(key, result =>
       chrome.runtime.lastError
@@ -46,23 +46,23 @@ const handleSubmit = async () => {
 
   let loginData = { userId: userId, password: password, autoLogin: autoLogin, sites: sites };
 
-  await setStorageData({ loginData: loginData })
+  await setChromeStorage({ loginData: loginData })
 
-  let pageData = await getStorageData('loginData')
+  let pageData = await getChromeStorage('loginData')
   console.log(pageData)
   await populateData();
 
 }
 
 const handleReset = async () => {
-  await removeStorageData('loginData');
+  await removeChromeStorage('loginData');
   await populateData();
   await handleSubmitButtonState()
 }
 
 const handleSubmitButtonState = async () => {
 
-  let loginData = await getStorageData('loginData');
+  let loginData = await getChromeStorage('loginData');
 
   let input1 = document.getElementById("userId")
   let input2 = document.getElementById('password')
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 const populateData = async () => {
 
-  let loginData = await getStorageData('loginData');
+  let loginData = await getChromeStorage('loginData');
   console.log('loginData is...', loginData)
   if (!(loginData
     && Object.keys(loginData).length === 0
