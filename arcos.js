@@ -37,13 +37,13 @@ const waitForElement = (selector) => {
     });
 };
 
-let port = chrome.runtime.connect({ name: "vms" });
+let port = chrome.runtime.connect({ name: "arcos" });
 
 
 // OPEN PORT FROM VMS PAGE TO CONNECT WITH SERVICE WORKER
 const initPort = async () => {
     port.postMessage({
-        type: "vmsConnection",
+        type: "arcosConnection",
         params: null,
     });
 
@@ -55,9 +55,13 @@ initPort();
 // PORT COMMUNICATION CODE
 port.onMessage.addListener(async ({ type, data }) => {
     switch (type) {
-        case "startVmsLogin":
-            console.log("LOGIN REQUESTED BY SERVICE WORKER");
-            await tryVmsLogin();
+        case "startArcosLogin":
+            console.log("ARCOS LOGIN REQUESTED BY SERVICE WORKER");
+            await tryArcosLogin();
+            port.postMessage({
+                type: "arcosLoginStatus",
+                params: { login: true },
+            });
             break;
         case "messageReceived":
             console.log('acknowledgement received')
@@ -100,16 +104,17 @@ const action = async () => {
 action();
 
 
-const tryVmsLogin = async () => {
+const tryArcosLogin = async () => {
 
     let loginData = {};
 
     let eve = new Event('input', { bubbles: true, cancelable: false });
 
-    const userId = document.getElementById('email');
-    const password = document.getElementById('password');
+    const userId = document.getElementById('txtusername');
+    const password = document.getElementById('txtpassword');
 
-    loginData = await getChromeStorage('loginData')
+    loginData = await getChromeStorage('loginData');
+    await document.getElementById('ctl00_objUCInfoDetails_btnOk').click()
 
     if (Object.keys(loginData).length !== 0) {
         userId.value = loginData.loginData.userId.toString();
@@ -117,14 +122,10 @@ const tryVmsLogin = async () => {
 
         await userId.dispatchEvent(eve);
         await password.dispatchEvent(eve);
-        await document.querySelector('button[type="submit"]').click()
+        // await document.getElementById('ctl00_MainContent_imgbtnLogin').click()
+
     }
+
 }
 
-const markAttendance = async () => {
-    await document.querySelector('[type="button"][class="btn btn-primary left check-out"]').click();
-    await document.querySelector('[type="button"][id="popup_ok"]').click();
-    await timeout(1000);
-    // await waitForElement('#popup_ok');
-    await document.querySelector('[type="button"][id="popup_ok"]').click();
-}
+

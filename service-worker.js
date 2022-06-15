@@ -23,10 +23,10 @@ chrome.runtime.onConnect.addListener(async (port) => {
             case "vmsConnection":
                 console.log("CONNECTION ESTABLISHED WITH VMS--PORT OPENED BY CONTENT SCRIPT");
                 //If not yet logged in then, send this message
-                // port.postMessage({
-                //     type: "startLogin",
-                //     params: null,
-                // });
+                port.postMessage({
+                    type: "startVmsLogin",
+                    params: null,
+                });
                 break;
 
             case "loginStatus":
@@ -36,6 +36,20 @@ chrome.runtime.onConnect.addListener(async (port) => {
                         type: "markAttendance",
                         params: null,
                     });
+                }
+                break;
+            case "arcosConnection":
+                console.log("CONNECTION ESTABLISHED WITH ARCOS--PORT OPENED BY CONTENT SCRIPT");
+                //If not yet logged in then, send this message
+                port.postMessage({
+                    type: "startArcosLogin",
+                    params: null,
+                });
+                break;
+            case "arcosLoginStatus":
+                console.log("LOGIN STATUS SENT BY AROCS CONTENT SCRIPT");
+                if (params.login) {
+                    console.log('logged status reached service worker')
                 }
                 break;
 

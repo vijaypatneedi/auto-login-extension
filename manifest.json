@@ -16,7 +16,8 @@
     "permissions": [
         "tabs",
         "scripting",
-        "storage"
+        "storage",
+        "notifications"
     ],
     "host_permissions": [
         "*://*/*"
@@ -31,6 +32,14 @@
             ],
             "matches": [
                 "https://vms.axisb.com:8443/*"
+            ]
+        },
+        {
+            "js": [
+                "arcos.js"
+            ],
+            "matches": [
+                "https://172.16.254.145/frmLoginACMO.aspx"
             ]
         },
         {
