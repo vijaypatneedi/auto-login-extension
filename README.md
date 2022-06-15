@@ -16,7 +16,7 @@ chrome extension to autoLogin
 
 Open the website where you want to autologin.
 
-![image](https://user-images.githubusercontent.com/46915849/173779099-f6ce6b99-05ef-413e-98fd-230e3aac401e.png)
+<img src="https://user-images.githubusercontent.com/46915849/173779099-f6ce6b99-05ef-413e-98fd-230e3aac401e.png" width="400">
 
 
 Features to be implemented :
