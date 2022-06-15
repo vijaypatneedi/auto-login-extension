@@ -16,6 +16,9 @@ chrome extension to autoLogin
 
 Open the website where you want to autologin.
 
+![image](https://user-images.githubusercontent.com/46915849/173778701-55eb28b9-dd64-40f2-a15b-1d1a3add9e9f.png)
+
+
 Features to be implemented :
 
 - on click of any button or updating inputs, the reset button should be updated to submit
