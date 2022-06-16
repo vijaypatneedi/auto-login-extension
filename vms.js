@@ -127,4 +127,6 @@ const markAttendance = async () => {
     await timeout(1000);
     // await waitForElement('#popup_ok');
     await document.querySelector('[type="button"][id="popup_ok"]').click();
+    let checkInTime = await document.getElementById('punchIn').innerHTML;
+    await setChromeStorage({ checkInTime: checkInTime });
 }
