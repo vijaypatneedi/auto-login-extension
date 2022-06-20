@@ -1,3 +1,27 @@
+chrome.alarms.onAlarm.addListener((alarm) => {
+    if (alarm.name === "vmsProcess") {
+        console.log('vms alarm called')
+        startVmsProcess();
+    }
+});
+
+chrome.runtime.onInstalled.addListener(() => {
+    chrome.alarms.get('vmsProcess', a => {
+        if (!a) {
+            console.log('vms alarm created')
+            chrome.alarms.create('vmsProcess', {
+                periodInMinutes: 1
+            });
+        }
+    });
+});
+
+chrome.runtime.onInstalled.addListener(async () => {
+    await setChromeStorage({ checkInTime: '' })
+    await setChromeStorage({ checkOutTime: '' })
+    await setChromeStorage({ todaysDate: '' })
+});
+
 // service worker script(background script)
 console.log("This prints to the console of the service worker (background script)")
 
@@ -6,17 +30,36 @@ importScripts('service-worker-utils.js')
 importScripts('chrome-storage-apis.js')
 
 
-async function startProcess() {
-    await setChromeStorage({ checkInTime: '' })
-    await setChromeStorage({ checkOutTime: '' })
+
+
+async function startVmsProcess() {
+
+    let today = new Date();
+    let savedDate = await getChromeStorage('todaysDate');
+    console.log('savedDate/todayDate is...', savedDate.todaysDate, today.getDate().toString());
+    if (today.getDate().toString() !== savedDate.todaysDate) {
+        await setChromeStorage({ todaysDate: today.getDate().toString() })
+        await setChromeStorage({ checkInTime: '' })
+        await setChromeStorage({ checkOutTime: '' })
+    }
+
     let loginData = await getChromeStorage('loginData');
     console.log('loginData is...', loginData);
     if (Object.keys(loginData).length && loginData.loginData.autoLogin) {
-        createOrSelectTab()
+        let checkInTime = await getChromeStorage('checkInTime');
+        let checkOutTime = await getChromeStorage('checkOutTime');
+        console.log('checkInTime/checkOutTime is...', checkInTime, checkOutTime);
+        if (!checkInTime.checkInTime) {
+            console.log('checkIn called');
+            createOrSelectTab()
+        }
+        if (checkInTime.checkInTime && !checkOutTime.checkOutTime) {
+            console.log('checkout logic to be implemented');
+        }
+
     }
 
 }
-startProcess()
 
 const notification = async () => {
     console.log('notification called')
@@ -40,13 +83,10 @@ chrome.runtime.onConnect.addListener(async (port) => {
             case "vmsConnection":
                 console.log("CONNECTION ESTABLISHED WITH VMS--PORT OPENED BY CONTENT SCRIPT");
                 //If not yet logged in then, send this message
-                let checkInTime = await getChromeStorage('checkInTime');
-                if (!checkInTime.checkInTime) {
-                    port.postMessage({
-                        type: "startVmsLogin",
-                        params: null,
-                    });
-                }
+                port.postMessage({
+                    type: "startVmsLogin",
+                    params: null,
+                });
                 break;
             case "loginStatus":
                 console.log("LOGIN STATUS SENT BY CONTENT SCRIPT");

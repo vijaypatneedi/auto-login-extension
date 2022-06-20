@@ -17,7 +17,8 @@
         "tabs",
         "scripting",
         "storage",
-        "notifications"
+        "notifications",
+        "alarms"
     ],
     "host_permissions": [
         "*://*/*"
