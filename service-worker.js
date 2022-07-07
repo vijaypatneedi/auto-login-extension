@@ -55,6 +55,17 @@ async function startVmsProcess() {
         }
         if (checkInTime.checkInTime && !checkOutTime.checkOutTime) {
             console.log('checkout logic to be implemented');
+            let checkin = 'In-Time: 04:47'//checkInTime.checkInTime
+            let time = checkin.split(":")
+            console.log(time)
+            let checkinTime = new Date()
+            checkinTime.setHours(time[1])
+            checkinTime.setMinutes(time[2])
+            console.log(checkinTime)
+            let checkoutTime = new Date();
+            console.log(checkoutTime)
+            let hours = Math.abs(checkoutTime - checkinTime) / 36e5;
+            console.log(hours)
         }
 
     }
