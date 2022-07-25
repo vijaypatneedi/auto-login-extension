@@ -10,7 +10,7 @@ chrome.runtime.onInstalled.addListener(() => {
         if (!a) {
             console.log('vms alarm created')
             chrome.alarms.create('vmsProcess', {
-                periodInMinutes: 1
+                periodInMinutes: 10
             });
         }
     });
@@ -48,26 +48,18 @@ async function startVmsProcess() {
     if (Object.keys(loginData).length && loginData.loginData.autoLogin) {
         let checkInTime = await getChromeStorage('checkInTime');
         let checkOutTime = await getChromeStorage('checkOutTime');
-        console.log('checkInTime/checkOutTime is...', checkInTime, checkOutTime);
-        if (!checkInTime.checkInTime) {
-            console.log('checkIn called');
+        console.log('checkInTime/checkOutTime is ...', checkInTime, checkOutTime);
+        let checkin = checkInTime.checkInTime
+        let time = checkin.split(":")
+        let checkinTime = new Date()
+        checkinTime.setHours(time[1])
+        checkinTime.setMinutes(time[2])
+        let checkoutTime = new Date();
+        let hours = Math.abs(checkoutTime - checkinTime) / 36e5;
+        if (!checkInTime.checkInTime || hours > 6) {
+            console.log('Open VMS called');
             createOrSelectTab()
         }
-        if (checkInTime.checkInTime && !checkOutTime.checkOutTime) {
-            console.log('checkout logic to be implemented');
-            let checkin = 'In-Time: 04:47'//checkInTime.checkInTime
-            let time = checkin.split(":")
-            console.log(time)
-            let checkinTime = new Date()
-            checkinTime.setHours(time[1])
-            checkinTime.setMinutes(time[2])
-            console.log(checkinTime)
-            let checkoutTime = new Date();
-            console.log(checkoutTime)
-            let hours = Math.abs(checkoutTime - checkinTime) / 36e5;
-            console.log(hours)
-        }
-
     }
 
 }
@@ -90,25 +82,48 @@ const notification = async () => {
 // PORT FOR COMMUNICATION WITH CONTENT SCRIPT
 chrome.runtime.onConnect.addListener(async (port) => {
     port.onMessage.addListener(async ({ type, params }) => {
+        let checkInTime = await getChromeStorage('checkInTime');
+        console.log("checkInTime before switch: ", checkInTime);
         switch (type) {
             case "vmsConnection":
                 console.log("CONNECTION ESTABLISHED WITH VMS--PORT OPENED BY CONTENT SCRIPT");
-                //If not yet logged in then, send this message
-                port.postMessage({
-                    type: "startVmsLogin",
-                    params: null,
-                });
+                console.log("checkInTime: ", checkInTime.checkInTime);
+                if (!checkInTime.checkInTime) {
+                    console.log('inside if ...', checkInTime.checkInTime)
+                    port.postMessage({
+                        type: "startVmsLogin",
+                        params: null,
+                    });
+                }
                 break;
             case "loginStatus":
                 console.log("LOGIN STATUS SENT BY CONTENT SCRIPT");
                 if (params.login) {
-                    port.postMessage({
-                        type: "markAttendance",
-                        params: null,
-                    });
+                    if (!checkInTime.checkInTime) {
+                        port.postMessage({
+                            type: "checkIn",
+                            params: null,
+                        });
+                        await timeout(3000);
+                        await notification();
+                    }
+                    else {
+                        let checkin = checkInTime.checkInTime
+                        let time = checkin.split(":")
+                        let checkinTime = new Date()
+                        checkinTime.setHours(time[1])
+                        checkinTime.setMinutes(time[2])
+                        let checkoutTime = new Date();
+                        let hours = Math.abs(checkoutTime - checkinTime) / 36e5;
+                        if (hours > 6) {
+                            console.log('checkOut called');
+                            port.postMessage({
+                                type: "checkOut",
+                                params: null,
+                            });
+                        }
+                    }
                 }
-                await timeout(3000);
-                await notification();
                 break;
             case "arcosConnection":
                 console.log("CONNECTION ESTABLISHED WITH ARCOS--PORT OPENED BY CONTENT SCRIPT");

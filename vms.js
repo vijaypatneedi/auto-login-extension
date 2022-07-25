@@ -63,10 +63,14 @@ port.onMessage.addListener(async ({ type, data }) => {
             console.log('acknowledgement received')
             break;
 
-        case "markAttendance":
-            console.log("MARK ATTENDANCE REQUESTED BY SERVICE WORKER");
-            await markAttendance();
+        case "checkIn":
+            console.log("CHECK-IN REQUESTED BY SERVICE WORKER");
+            await checkIn();
             port.postMessage({ type: "attendanceMarked", params: data });
+            break;
+        case "checkOut":
+            console.log("CHECK-OUT REQUESTED BY SERVICE WORKER");
+            await checkOut();
             break;
 
         default:
@@ -121,8 +125,18 @@ const tryVmsLogin = async () => {
     }
 }
 
-const markAttendance = async () => {
-    await document.querySelector('[type="button"][class="btn btn-primary left check-out"]').click();
+const checkIn = async () => {
+    await document.querySelector('[class="fa fa-sign-in"]').parentElement.click();
+    await document.querySelector('[type="button"][id="popup_ok"]').click();
+    await timeout(1000);
+    // await waitForElement('#popup_ok');
+    await document.querySelector('[type="button"][id="popup_ok"]').click();
+    let checkInTime = await document.getElementById('punchIn').innerHTML;
+    await setChromeStorage({ checkInTime: checkInTime });
+}
+
+const checkOut = async () => {
+    await document.querySelector('[class="fa fa-sign-out"]').parentElement.click();
     await document.querySelector('[type="button"][id="popup_ok"]').click();
     await timeout(1000);
     // await waitForElement('#popup_ok');
