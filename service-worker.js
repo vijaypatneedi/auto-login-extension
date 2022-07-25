@@ -1,6 +1,6 @@
 chrome.alarms.onAlarm.addListener((alarm) => {
     if (alarm.name === "vmsProcess") {
-        console.log('vms alarm called')
+        console.log('************vms alarm API called**************')
         startVmsProcess();
     }
 });
@@ -36,7 +36,7 @@ async function startVmsProcess() {
 
     let today = new Date();
     let savedDate = await getChromeStorage('todaysDate');
-    console.log('savedDate/todayDate is...', savedDate.todaysDate, today.getDate().toString());
+    console.log('savedDate in chrome storage is... ', savedDate.todaysDate, ' Todays date is... ', today.getDate().toString());
     if (today.getDate().toString() !== savedDate.todaysDate) {
         await setChromeStorage({ todaysDate: today.getDate().toString() })
         await setChromeStorage({ checkInTime: '' })
@@ -48,7 +48,7 @@ async function startVmsProcess() {
     if (Object.keys(loginData).length && loginData.loginData.autoLogin) {
         let checkInTime = await getChromeStorage('checkInTime');
         let checkOutTime = await getChromeStorage('checkOutTime');
-        console.log('checkInTime/checkOutTime is ...', checkInTime, checkOutTime);
+        console.log('checkInTime is ...', checkInTime, 'checkOutTime is ...', checkOutTime);
         let checkin = checkInTime.checkInTime
         let time = checkin.split(":")
         let checkinTime = new Date()
@@ -83,13 +83,10 @@ const notification = async () => {
 chrome.runtime.onConnect.addListener(async (port) => {
     port.onMessage.addListener(async ({ type, params }) => {
         let checkInTime = await getChromeStorage('checkInTime');
-        console.log("checkInTime before switch: ", checkInTime);
         switch (type) {
             case "vmsConnection":
                 console.log("CONNECTION ESTABLISHED WITH VMS--PORT OPENED BY CONTENT SCRIPT");
-                console.log("checkInTime: ", checkInTime.checkInTime);
-                if (!checkInTime.checkInTime) {
-                    console.log('inside if ...', checkInTime.checkInTime)
+                if (!checkInTime.checkInTime || 1) {
                     port.postMessage({
                         type: "startVmsLogin",
                         params: null,
