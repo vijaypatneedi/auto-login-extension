@@ -18,12 +18,16 @@ Open the website where you want to autologin.
 
 <img src="https://user-images.githubusercontent.com/46915849/173779099-f6ce6b99-05ef-413e-98fd-230e3aac401e.png" width="400">
 
+CheckIn Logic: when connected to vpn automatically tries to login and save the checkIn time
+
+CheckOut Logic: After 6 hours from checkIn, triggers checkOut every 10min, as the latest checked out time is always updated in VMS.
+
 
 Features to be implemented :
 
 - on click of any button or updating inputs, the reset button should be updated to submit
 
-- If the url is https://vms.axisb.com:8443/ then it has to updated to https://vms.axisb.com:8443/
+- If the url is https://vms.axisb.com:8443/login then it has to updated to https://vms.axisb.com:8443/
 
 Things to try:
 
