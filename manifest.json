@@ -40,6 +40,7 @@
                 "arcos.js"
             ],
             "matches": [
+                "https://172.16.254.147/frmLoginACMO.aspx",
                 "https://172.16.254.145/frmLoginACMO.aspx"
             ]
         },
@@ -50,6 +51,14 @@
             "matches": [
                 "https://jira.axisb.com/login.jsp",
                 "https://bitbucket.axisb.com/login"
+            ]
+        },
+        {
+            "js": [
+                "pre-login.js"
+            ],
+            "matches": [
+                "http://localhost:5000/pre-login"
             ]
         }
     ]

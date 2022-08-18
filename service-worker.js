@@ -10,7 +10,7 @@ chrome.runtime.onInstalled.addListener(() => {
         if (!a) {
             console.log('vms alarm created')
             chrome.alarms.create('vmsProcess', {
-                periodInMinutes: 10
+                periodInMinutes: 15
             });
         }
     });
@@ -56,7 +56,7 @@ async function startVmsProcess() {
         checkinTime.setMinutes(time[2])
         let checkoutTime = new Date();
         let hours = Math.abs(checkoutTime - checkinTime) / 36e5;
-        if (!checkInTime.checkInTime || hours > 6) {
+        if (!checkInTime.checkInTime || hours > 8) {
             console.log('Open VMS called');
             createOrSelectTab()
         }
