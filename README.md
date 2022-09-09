@@ -20,7 +20,7 @@ Open the website where you want to autologin.
 
 CheckIn Logic: when connected to vpn automatically tries to login and save the checkIn time
 
-CheckOut Logic: After 6 hours from checkIn, triggers checkOut every 10min, as the latest checked out time is always updated in VMS.
+CheckOut Logic: After 8 hours from checkIn, triggers checkOut every 15min, as the latest checked out time is always updated in VMS.
 
 
 Features to be implemented :
