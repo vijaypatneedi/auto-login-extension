@@ -6,7 +6,8 @@ chrome extension to autoLogin
 
 1. Download the extension and Unzip
 
-![image](https://user-images.githubusercontent.com/46915849/189331507-07dd5431-0eaf-4c26-bc7d-4b1aab0d470e.png)
+![image](https://user-images.githubusercontent.com/46915849/189331776-b23a808c-8ba9-4030-baca-ac0bcfb9939b.png)
+
 
 
 2. Open chrome://extensions/ in your chrome browser
