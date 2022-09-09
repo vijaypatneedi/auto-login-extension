@@ -6,6 +6,9 @@ chrome extension to autoLogin
 
 1. Download the extension and Unzip
 
+![image](https://user-images.githubusercontent.com/46915849/189331507-07dd5431-0eaf-4c26-bc7d-4b1aab0d470e.png)
+
+
 2. Open chrome://extensions/ in your chrome browser
 
 3. Check Developer mode checkbox
