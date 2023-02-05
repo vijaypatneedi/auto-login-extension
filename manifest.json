@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Deloitte VMS AutoLogin extension v3",
+    "name": "Deloitte VMS AutoLogin v3",
     "description": "AutoLogin to axis portal when connected to vpn",
     "version": "0.0.1",
     "icons": {

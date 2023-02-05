@@ -56,6 +56,7 @@ const handleSubmit = async () => {
 
 const handleReset = async () => {
   await removeChromeStorage('loginData');
+  await removeChromeStorage('loginAttempts');
   await populateData();
   await handleSubmitButtonState()
 }
