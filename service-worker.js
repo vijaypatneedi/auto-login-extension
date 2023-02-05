@@ -34,7 +34,14 @@ importScripts('chrome-storage-apis.js')
 
 async function startVmsProcess() {
 
-    let today = new Date();
+     // Check if the day is a weekend
+     let today = new Date();
+     let dayOfWeek = today.getDay();
+     if (dayOfWeek === 0 || dayOfWeek === 6) {
+         console.log("Today is a weekend, not running the process");
+         return;
+     }
+
     let savedDate = await getChromeStorage('todaysDate');
     console.log('savedDate in chrome storage is... ', savedDate.todaysDate, ' Todays date is... ', today.getDate().toString());
     if (today.getDate().toString() !== savedDate.todaysDate) {
@@ -112,7 +119,7 @@ chrome.runtime.onConnect.addListener(async (port) => {
                         checkinTime.setMinutes(time[2])
                         let checkoutTime = new Date();
                         let hours = Math.abs(checkoutTime - checkinTime) / 36e5;
-                        if (hours > 8 && hours <12) {
+                        if (hours > 8 && hours <10) {
                             console.log('checkOut called');
                             port.postMessage({
                                 type: "checkOut",
