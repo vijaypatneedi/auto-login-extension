@@ -115,9 +115,9 @@ const tryVmsLogin = async () => {
 
     loginData = await getChromeStorage('loginData');
 
-    if (Object.keys(loginData).length !== 0) {
-        userId.value = loginData.loginData.userId.toString();
-        password.value = loginData.loginData.password.toString();
+    if (Object.keys(loginData.loginData).length !== 0) {
+        userId.value = loginData?.loginData?.userId?.toString();
+        password.value = loginData?.loginData?.password?.toString();
 
         await userId.dispatchEvent(eve);
         await password.dispatchEvent(eve);
