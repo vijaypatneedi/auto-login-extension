@@ -20,6 +20,7 @@ chrome.runtime.onInstalled.addListener(async () => {
     await setChromeStorage({ checkInTime: '' })
     await setChromeStorage({ checkOutTime: '' })
     await setChromeStorage({ todaysDate: '' })
+    await setChromeStorage({ loginAttempts: 0 })
 });
 
 // service worker script(background script)
@@ -37,8 +38,10 @@ async function startVmsProcess() {
      // Check if the day is a weekend
      let today = new Date();
      let dayOfWeek = today.getDay();
-     if (dayOfWeek === 0 || dayOfWeek === 6) {
-         console.log("Today is a weekend, not running the process");
+     let loginAttempts = await getChromeStorage('loginAttempts');
+     console.log('loginAttempts', loginAttempts);
+     if (dayOfWeek === 0 || dayOfWeek === 6 || loginAttempts.loginAttempts> 3) {
+         console.log("Today is a weekend or password has expired, not running the process");
          return;
      }
 
@@ -48,6 +51,7 @@ async function startVmsProcess() {
         await setChromeStorage({ todaysDate: today.getDate().toString() })
         await setChromeStorage({ checkInTime: '' })
         await setChromeStorage({ checkOutTime: '' })
+        await setChromeStorage({ loginAttempts: 0 })
     }
 
     let loginData = await getChromeStorage('loginData');
@@ -90,10 +94,13 @@ const notification = async () => {
 chrome.runtime.onConnect.addListener(async (port) => {
     port.onMessage.addListener(async ({ type, params }) => {
         let checkInTime = await getChromeStorage('checkInTime');
+        let loginAttempts = await getChromeStorage('loginAttempts');
+        let loginData = await getChromeStorage('loginData');
         switch (type) {
             case "vmsConnection":
                 console.log("CONNECTION ESTABLISHED WITH VMS--PORT OPENED BY CONTENT SCRIPT");
-                if (!checkInTime.checkInTime || 1) {
+                console.log('loginAttempts', loginAttempts.loginAttempts);
+                if (!checkInTime.checkInTime && loginAttempts.loginAttempts<3 && loginData.loginData.autoLogin) {
                     port.postMessage({
                         type: "startVmsLogin",
                         params: null,

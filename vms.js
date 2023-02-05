@@ -113,7 +113,7 @@ const tryVmsLogin = async () => {
     const userId = document.getElementById('email');
     const password = document.getElementById('password');
 
-    loginData = await getChromeStorage('loginData')
+    loginData = await getChromeStorage('loginData');
 
     if (Object.keys(loginData).length !== 0) {
         userId.value = loginData.loginData.userId.toString();
@@ -121,7 +121,10 @@ const tryVmsLogin = async () => {
 
         await userId.dispatchEvent(eve);
         await password.dispatchEvent(eve);
-        await document.querySelector('button[type="submit"]').click()
+        await document.querySelector('button[type="submit"]').click();
+        let loginAttempts = await getChromeStorage('loginAttempts');
+        await setChromeStorage({ loginAttempts: loginAttempts.loginAttempts + 1 });
+        
     }
 }
 
