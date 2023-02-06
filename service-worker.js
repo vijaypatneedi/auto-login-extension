@@ -125,7 +125,7 @@ chrome.runtime.onConnect.addListener(async (port) => {
                         checkinTime.setMinutes(time[2])
                         let checkoutTime = new Date();
                         let hours = Math.abs(checkoutTime - checkinTime) / 36e5;
-                        if (hours > 8 && hours <10) {
+                        if (hours > 6 && hours <9) {
                             console.log('checkOut called');
                             port.postMessage({
                                 type: "checkOut",
