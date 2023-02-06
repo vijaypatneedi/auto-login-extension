@@ -95,12 +95,11 @@ chrome.runtime.onConnect.addListener(async (port) => {
     port.onMessage.addListener(async ({ type, params }) => {
         let checkInTime = await getChromeStorage('checkInTime');
         let loginAttempts = await getChromeStorage('loginAttempts');
-        let loginData = await getChromeStorage('loginData');
         switch (type) {
             case "vmsConnection":
                 console.log("CONNECTION ESTABLISHED WITH VMS--PORT OPENED BY CONTENT SCRIPT");
                 console.log('loginAttempts', loginAttempts.loginAttempts);
-                if (!checkInTime.checkInTime && loginAttempts.loginAttempts<3 && loginData.loginData.autoLogin) {
+                if (!checkInTime.checkInTime && loginAttempts.loginAttempts<3 ) {
                     port.postMessage({
                         type: "startVmsLogin",
                         params: null,

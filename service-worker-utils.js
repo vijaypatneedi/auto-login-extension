@@ -9,25 +9,25 @@ const timeout = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
 };
 const createOrSelectTab = (url2) => {
-    let url = "https://vms.axisb.com:8443/"
+    const matchUrls = ["https://vms.axisb.com:8443/login", "https://vms.axisb.com:8443/"];
     return new Promise((resolve, reject) => {
         try {
-            chrome.tabs.query({ url: url }, async (site) => {
-                if (site.length > 0)
-                    site = await updateTab(
-                        site[0].id,
-                        url
-                    );
-                else site = await createTab(url);
+            let currentTab;
+            chrome.tabs.query({ url: matchUrls }, async(tabs) => {
+                if (tabs.length > 0) {
+                  console.log(`Matched tabs with URL(s): ${matchUrls.join(", ")}`);
 
-                // Update site tab to login page
-                let siteTab = await updateTab(
-                    site.id,
-                    url
-                );
-                let siteTabId = siteTab.id;
-                console.log("Website Tab opened, id : ", siteTabId);
-                resolve(siteTabId);
+                  const filteredTab1 = tabs.filter(tab => tab.url === "https://vms.axisb.com:8443/")[0];
+                  const filteredTab2 = tabs.filter(tab => tab.url === "https://vms.axisb.com:8443/login")[0];
+                    if (filteredTab1) currentTab = filteredTab1;
+                    if (filteredTab2) currentTab = filteredTab2;
+
+                } else {
+                  console.log(`No tabs with URL(s): ${matchUrls.join(", ")} were found`);
+                  currentTab = await createTab(matchUrls[0]);
+                }
+                resolve(currentTab.id);
+                console.log("Website Tab opened, id : ", currentTab.id);
             });
         } catch (e) {
             reject(`Error : ${e.message}`);
