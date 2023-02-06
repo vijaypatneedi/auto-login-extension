@@ -20,7 +20,7 @@ const createOrSelectTab = (url2) => {
                   const filteredTab1 = tabs.filter(tab => tab.url === "https://vms.axisb.com:8443/")[0];
                   const filteredTab2 = tabs.filter(tab => tab.url === "https://vms.axisb.com:8443/login")[0];
                     if (filteredTab1) currentTab = filteredTab1;
-                    if (filteredTab2) currentTab = filteredTab2;
+                    else if (filteredTab2) currentTab = filteredTab2;
 
                 } else {
                   console.log(`No tabs with URL(s): ${matchUrls.join(", ")} were found`);
