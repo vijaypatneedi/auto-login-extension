@@ -99,7 +99,7 @@ chrome.runtime.onConnect.addListener(async (port) => {
             case "vmsConnection":
                 console.log("CONNECTION ESTABLISHED WITH VMS--PORT OPENED BY CONTENT SCRIPT");
                 console.log('loginAttempts', loginAttempts.loginAttempts);
-                if (!checkInTime.checkInTime && loginAttempts.loginAttempts<3 ) {
+                if (!checkInTime.checkInTime || loginAttempts.loginAttempts<3 ) {
                     port.postMessage({
                         type: "startVmsLogin",
                         params: null,
