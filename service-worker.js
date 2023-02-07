@@ -39,7 +39,7 @@ async function startVmsProcess() {
      let today = new Date();
      let dayOfWeek = today.getDay();
      let loginAttempts = await getChromeStorage('loginAttempts');
-     console.log('loginAttempts', loginAttempts);
+     console.log('loginAttempts', loginAttempts.loginAttempts);
      if (dayOfWeek === 0 || dayOfWeek === 6 || loginAttempts.loginAttempts> 3) {
          console.log("Today is a weekend or password has expired, not running the process");
          return;
