@@ -67,7 +67,7 @@ async function startVmsProcess() {
         checkinTime.setMinutes(time[2])
         let checkoutTime = new Date();
         let hours = Math.abs(checkoutTime - checkinTime) / 36e5;
-        if (!checkInTime.checkInTime || hours > 8) {
+        if (!checkInTime.checkInTime || hours > 6) {
             console.log('Open VMS called');
             createOrSelectTab()
         }
@@ -125,7 +125,7 @@ chrome.runtime.onConnect.addListener(async (port) => {
                         checkinTime.setMinutes(time[2])
                         let checkoutTime = new Date();
                         let hours = Math.abs(checkoutTime - checkinTime) / 36e5;
-                        if (hours > 6 && hours <9) {
+                        if (hours > 6) {
                             console.log('checkOut called');
                             port.postMessage({
                                 type: "checkOut",
